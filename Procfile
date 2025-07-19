@@ -1,1 +1,1 @@
-web: gunicorn sensores.wsgi:application
+web: gunicorn sensores.wsgi --log-file -
