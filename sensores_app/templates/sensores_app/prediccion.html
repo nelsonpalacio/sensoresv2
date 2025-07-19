@@ -1,0 +1,53 @@
+{% extends "sensores_app/base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h4 class="text-center mb-4 text-primary">🌬️ Predicción de PM2.5</h4>
+
+    <!-- Mensaje de introducción bonito -->
+    <div class="container my-4 p-4 bg-light border rounded shadow-sm">
+        <h5 class="mb-2 text-dark">🌤️ ¿Quieres saber cómo estará el aire un día específico?</h5>
+        <p class="text-secondary fs-5">
+            Selecciona una fecha y descubre la <strong>predicción del promedio de partículas PM2.5</strong> en el ambiente.
+            <br>
+            <span class="text-success">¡Planifica tu día con anticipación!</span>
+        </p>
+    </div>
+
+    <!-- Formulario de predicción -->
+    <form method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="fecha_prediccion" class="form-label">📅 Selecciona una fecha:</label>
+            <input type="date" id="fecha_prediccion" name="fecha_prediccion" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">🔍 Obtener predicción</button>
+    </form>
+
+    <!-- Resultado de la predicción -->
+    {% if prediccion_resultado is not None and fecha_usuario %}
+    
+
+  
+    <div class="alert alert-info mt-3">
+    Predicción de PM2.5 para el <strong>{{ fecha_usuario|date:"d \\d\\e F \\d\\e Y" }}</strong>: 
+    <strong>{{ prediccion_resultado|floatformat:2 }}</strong> µg/m³
+    <br>
+    <span class="text-muted">🔍 Precisión del modelo (MAPE): <strong>{{ porcentaje_error|floatformat:2 }}%</strong></span>
+</div>
+
+
+
+
+{% endif %}
+
+    <!-- Errores -->
+    {% if error_msgs %}
+        <div class="alert alert-danger mt-3">
+            {% for msg in error_msgs %}
+                <p>{{ msg }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
